@@ -16,6 +16,9 @@ jobs:
       - save_cache:
           paths: frontend/node-modules
           key: frontend-build
+      - run: |
+          ls -lrt frontend/
+
 workflows:
   default:
     jobs:
