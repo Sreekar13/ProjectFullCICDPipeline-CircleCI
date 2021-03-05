@@ -17,7 +17,7 @@ jobs:
           paths: frontend/node-modules
           key: frontend-build
       - run: |
-          ls -lrt frontend/
+          ls -lrt frontend/dist/
 
 workflows:
   default:
