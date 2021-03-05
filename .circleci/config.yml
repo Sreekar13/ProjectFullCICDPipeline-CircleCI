@@ -15,9 +15,24 @@ jobs:
             npm run build
       - save_cache:
           paths: frontend/node-modules
-          key: frontend-build
-      - run: |
-          ls -lrt frontend/dist/
+          key: frontend-nodemodules
+      - save_cache:
+          paths: frontend/dist
+          key: forntend-built-dist
+
+  build_backend:
+      docker: 
+        - image: circleci/node:13.8.0
+      steps:
+        - checkout
+        - run:
+            name: Building backend artifacts from the source code
+            command: |
+              cd backend
+              npm install
+              npm run build
+              ls -lrt *
+
 
 workflows:
   default:
