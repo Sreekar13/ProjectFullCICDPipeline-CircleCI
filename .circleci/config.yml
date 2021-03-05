@@ -20,7 +20,7 @@ jobs:
           paths: frontend/dist
           key: forntend-built-dist
 
-  build_backend:
+  build-backend:
       docker: 
         - image: circleci/node:13.8.0
       steps:
@@ -38,3 +38,4 @@ workflows:
   default:
     jobs:
       - build-frontend
+      - build-backend
