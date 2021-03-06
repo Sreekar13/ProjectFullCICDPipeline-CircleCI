@@ -30,7 +30,8 @@ jobs:
             command: |
               cd backend
               npm install
-              ls -lrt *
+              ls -lrt 
+
 
 
 
