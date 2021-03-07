@@ -18,19 +18,37 @@ jobs:
           key: frontend-nodemodules
       - save_cache:
           paths: frontend/dist
-          key: forntend-built-dist
+          key: forntend-build-dist
 
   build-backend:
-      docker: 
-        - image: circleci/node:13.8.0
-      steps:
-        - checkout
-        - run:
-            name: Building backend artifacts from the source code
-            command: |
-              cd backend
-              npm install
-              ls -lrt 
+    docker: 
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: Building backend artifacts from the source code
+          command: |
+            cd backend
+            npm install
+            ls -lrt 
+      - save_cache:
+          paths: backend/node-modules
+          key: backend-build
+
+  test-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: frontend-nodemodules
+      - run: 
+          name: Testing frontend code
+          command: |
+            cd frontend
+            npm run test
+
+    
 
 
 
