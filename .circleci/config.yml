@@ -30,7 +30,7 @@ jobs:
           command: |
             cd backend
             npm install
-            ls -lrt 
+            npm run build
       - save_cache:
           paths: backend/node-modules
           key: backend-build
