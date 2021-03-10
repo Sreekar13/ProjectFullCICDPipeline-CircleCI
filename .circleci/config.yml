@@ -86,7 +86,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Analyzing Frontend code
+          name: Analyzing backend code
           command: |
             cd backend
             npm install
