@@ -141,10 +141,11 @@ jobs:
           command: |
             echo "[server]" > .circleci/ansible/inventory.txt
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> .circleci/ansible/inventory.txt
-      - persist_to_workspace:
-          root: ~/
+      - save_cache:
+          key: inventory-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - .circleci/ansible/inventory.txt
+      - run: cat .circleci/ansible/inventory.txt
               
 
 workflows:
