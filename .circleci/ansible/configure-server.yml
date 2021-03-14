@@ -13,11 +13,11 @@
     ENVIRONMENT: production
     TYPEORM_CONNECTION: postgres
     TYPEORM_ENTITIES: ./src/modules/domain/**/*.entity.ts
-    TYPEORM_HOST: udapeopleprod.czq8e9rz33yq.us-west-2.rds.amazonaws.com
-    TYPEORM_PORT: 5432
-    TYPEORM_USERNAME: postgres
-    TYPEORM_PASSWORD: UdaPeople13
-    TYPEORM_DATABASE: udapeopleprod
+    TYPEORM_HOST: $TYPEORM_HOST
+    TYPEORM_PORT: $TYPEORM_PORT
+    TYPEORM_USERNAME: $TYPEORM_USERNAME
+    TYPEORM_PASSWORD: $TYPEORM_PASSWORD
+    TYPEORM_DATABASE: $TYPEORM_DATABASE
   roles:
     # Your code here
     - configure-server
