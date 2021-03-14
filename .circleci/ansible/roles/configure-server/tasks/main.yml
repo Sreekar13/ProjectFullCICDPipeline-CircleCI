@@ -1,0 +1,10 @@
+---
+- name: Upgrade packages
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+- name: install node
+  shell: |
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+    . ~/.nvm/nvm.sh
+    nvm install node
+- name: install pm2
+  shell: sudo install -g pm2
