@@ -187,7 +187,7 @@ jobs:
             # Your code here
             cd backend
             VAR=$(! grep -q "has been executed successfully" migration.log; echo $? )
-            curl -H "Content-Type: text/plain" -H "token: e6d371b7-e168-486d-9011-0dda1a6a3ab4" --request PUT --data "$VAR" https://api.memstash.io/values/
+            curl -H "Content-Type: text/plain" -H "token: e6d371b7-e168-486d-9011-0dda1a6a3ab4" --request PUT --data "$VAR" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
               
 
 workflows:
