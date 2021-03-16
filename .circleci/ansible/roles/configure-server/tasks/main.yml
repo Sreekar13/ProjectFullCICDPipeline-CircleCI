@@ -8,6 +8,7 @@
     cd /home/ubuntu/
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
     . /home/ubuntu/.nvm/nvm.sh
+    nvm use --delete-prefix v15.11.0
     nvm install node
 - name: install pm2
   shell: sudo install -g pm2
