@@ -3,12 +3,11 @@
   become: yes 
   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
 - name: install node
-  become: yes
   shell: |
     cd /home/ubuntu/
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-    . /home/ubuntu/.nvm/nvm.sh
-    nvm use --delete-prefix v15.11.0
+    /home/ubuntu/ /home/ubuntu/.nvm/nvm.sh
+    nvm install v15.11.0
     nvm install node
 - name: install pm2
   shell: sudo install -g pm2
