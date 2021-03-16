@@ -4,7 +4,9 @@
   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
 
 - name: Install Packages
+  become: yes
   apt: name=npm update_cache=yes state=latest
 
 - name: Install PM2
+  become: yes
   npm: name=pm2 global=yes
