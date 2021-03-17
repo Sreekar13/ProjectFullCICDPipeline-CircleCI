@@ -167,7 +167,7 @@ jobs:
       - run:
           name: Run ansible to configrure the server
           command: |
-            ansible-playbook -i /inventory.txt .circleci/ansible/configure-server.yml --extra-vars "HOST=$TYPEORM_HOST PORT=$TYPEORM_PORT USERNAME=$TYPEORM_USERNAME PASSWORD=$TYPEORM_PASSWORD DATABASE=$TYPEORM_DATABASE" 
+            ansible-playbook -i /inventory.txt .circleci/ansible/configure-server.yml --extra-vars "HOST=$TYPEORM_HOST PORT=$TYPEORM_PORT USERNAME=$TYPEORM_USERNAME PASSWORD=$TYPEORM_PASSWORD DATABASE=$TYPEORM_DATABASE"  -vvvv
 
   run-migrations:
     docker:
