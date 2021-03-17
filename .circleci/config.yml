@@ -247,8 +247,9 @@ jobs:
           command: |
             apk add --update ansible
       - run:
-          name: Run ansible to configrure the server
-
+          name: Run ansible to deploy backend to remote the server
+          command: |
+            ansible-playbook -i /tmp/inventory.txt .circleci/ansible/deploy-backend.yml -vvv
 
                 
 
@@ -273,4 +274,6 @@ workflows:
       - run-migrations:
           requires: [build-backend]
       - deploy-frontend:
+          requires: [configure-infrastructure]
+      - deploy-backend:
           requires: [configure-infrastructure]

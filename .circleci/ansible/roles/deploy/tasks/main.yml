@@ -10,6 +10,3 @@
   ignore_errors: yes
   shell: pm2 stop backend
 
-- name: Start backend
-  become: yes
-  become_user: ubuntu
