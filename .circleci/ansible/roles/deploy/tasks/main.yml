@@ -1,2 +1,15 @@
 ---
-- name: 
+- name: Copy dist folder
+  copy:
+   src:/home/circleci/project/backend/
+   dest:/home/ubuntu/backend
+
+- name: Stop pm2 service
+  become: yes
+  become_user: ubuntu
+  ignore_errors: yes
+  shell: pm2 stop backend
+
+- name: Start backend
+  become: yes
+  become_user: ubuntu
