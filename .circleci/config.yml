@@ -220,6 +220,7 @@ jobs:
       - run: 
           name: Build frontend url into code
           command: |
+            cd frontend
             npm run install
             npm run build
       - aws-cli/setup            
