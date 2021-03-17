@@ -142,7 +142,7 @@ jobs:
             echo "[server]" > .circleci/ansible/inventory.txt
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> .circleci/ansible/inventory.txt
       - save_cache:
-          key: inventory-{{ .Environment.CIRCLE_SHA1 }}
+          key: inventory1-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - .circleci/ansible/inventory.txt
       - run: cat .circleci/ansible/inventory.txt
@@ -153,7 +153,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: inventory-{{ .Environment.CIRCLE_SHA1 }}
+          key: inventory1-{{ .Environment.CIRCLE_SHA1 }}
       - add_ssh_keys:
           fingerprints: 7f:13:36:4d:43:cd:1c:42:e8:68:f3:41:89:d2:6c:12
       - run:
@@ -199,9 +199,9 @@ jobs:
       - checkout
       - aws-cli/setup
       - restore_cache:
-          key: forntend-build-dist
+          key: inventory1-{{ .Environment.CIRCLE_SHA1 }}          
       - restore_cache:
-          key: inventory-{{ .Environment.CIRCLE_SHA1 }}    
+          key: forntend-build-dist
       - run:
           name: Get backend url
           command: |
