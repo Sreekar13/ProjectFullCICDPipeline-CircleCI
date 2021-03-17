@@ -141,19 +141,19 @@ jobs:
           command: |
             echo "[server]" > .circleci/ansible/inventory.txt
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> .circleci/ansible/inventory.txt
-      - save_cache:
-          key: inventory1-{{ .Environment.CIRCLE_SHA1 }}
+      - persist_to_workspace:
+          root: ~/
           paths:
-            - .circleci/ansible/inventory.txt
-      - run: cat .circleci/ansible/inventory.txt
+            - ".circleci/ansible/inventory.txt"
+      - run: cat ~/inventory.txt
 
   configure-infrastructure:
     docker:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - restore_cache:
-          key: inventory1-{{ .Environment.CIRCLE_SHA1 }}
+      - attach_workspace:
+          at: ~/
       - add_ssh_keys:
           fingerprints: 7f:13:36:4d:43:cd:1c:42:e8:68:f3:41:89:d2:6c:12
       - run:
@@ -163,7 +163,7 @@ jobs:
       - run:
           name: Run ansible to configrure the server
           command: |
-            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
+            ansible-playbook -i inventory.txt .circleci/ansible/configure-server.yml
 
   run-migrations:
     docker:
@@ -198,15 +198,15 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup
-      - restore_cache:
-          key: inventory1-{{ .Environment.CIRCLE_SHA1 }}          
+      - attach_workspace:
+          at: ~/        
       - restore_cache:
           key: forntend-build-dist
       - run:
           name: Get backend url
           command: |
             # your code here
-            BACKEND_IP=$(tail -1 .circleci/ansible/inventory.txt)
+            BACKEND_IP=$(tail -1 inventory.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run: 
