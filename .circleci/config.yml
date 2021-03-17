@@ -143,7 +143,7 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            echo "[server]" > .circleci/ansible/inventory.txt
+            echo "[server]" > /inventory.txt
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> /inventory.txt
       - persist_to_workspace:
           root: /
@@ -157,7 +157,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/
+          at: /
       - add_ssh_keys:
           fingerprints: 7f:13:36:4d:43:cd:1c:42:e8:68:f3:41:89:d2:6c:12
       - run:
@@ -167,7 +167,7 @@ jobs:
       - run:
           name: Run ansible to configrure the server
           command: |
-            ansible-playbook -i inventory.txt .circleci/ansible/configure-server.yml --extra-vars "HOST=$TYPEORM_HOST PORT=$TYPEORM_PORT USERNAME=$TYPEORM_USERNAME PASSWORD=$TYPEORM_PASSWORD DATABASE=$TYPEORM_DATABASE" 
+            ansible-playbook -i /inventory.txt .circleci/ansible/configure-server.yml --extra-vars "HOST=$TYPEORM_HOST PORT=$TYPEORM_PORT USERNAME=$TYPEORM_USERNAME PASSWORD=$TYPEORM_PASSWORD DATABASE=$TYPEORM_DATABASE" 
 
   run-migrations:
     docker:
@@ -203,14 +203,14 @@ jobs:
       - checkout
       - aws-cli/setup
       - attach_workspace:
-          at: ~/        
+          at: /        
       - restore_cache:
           key: forntend-build-dist
       - run:
           name: Get backend url
           command: |
             # your code here
-            BACKEND_IP=$(tail -1 inventory.txt)
+            BACKEND_IP=$(tail -1 /inventory.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run: 
