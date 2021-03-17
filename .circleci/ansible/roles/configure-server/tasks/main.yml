@@ -4,10 +4,10 @@
   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
 
 - name: Set environment variables in .profile
-  shell: echo -e 'export $ENVIRONMENT="production"\nexport $TYPEORM_CONNECTION="postgres"\nexport $TYPEORM_ENTITIES="./src/modules/domain/**/*.entity.ts"\nexport TYPEORM_HOST="{{ HOST }}"\nexport $TYPEORM_PORT="{{ PORT }}"\nexport $TYPEORM_USERNAME="{{ USERNAME }}"\nexport $TYPEORM_PASSWORD="{{ PASSWORD }}"\nexport $TYPEORM_DATABASE="{{ DATABASE }}"' >> /home/ubuntu/.profile
+  shell: echo -e '\nexport ENVIRONMENT="production"\nexport TYPEORM_CONNECTION="postgres"\nexport TYPEORM_ENTITIES="./src/modules/domain/**/*.entity.ts"\nexport TYPEORM_HOST="{{ HOST }}"\nexport TYPEORM_PORT="{{ PORT }}"\nexport TYPEORM_USERNAME="{{ USERNAME }}"\nexport TYPEORM_PASSWORD="{{ PASSWORD }}"\nexport TYPEORM_DATABASE="{{ DATABASE }}"' >> /home/ubuntu/.profile
 
 - name: Source .profile 
-  shell: source /home/ubuntu/.profile
+  shell: . /home/ubuntu/.profile
 
 - name: Install Packages
   become: yes
