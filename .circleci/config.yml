@@ -214,7 +214,7 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-            BACKEND_IP=$(tail -1 /inventory.txt)
+            BACKEND_IP=$(tail -1 /tmp/inventory.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run: 
