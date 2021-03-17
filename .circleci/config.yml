@@ -229,7 +229,25 @@ jobs:
             # your code here
             cd frontend
             aws s3 sync dist s3://udapeople-${CIRCLE_WORKFLOW_ID} --delete   
+      - persist_to_workspace:
+          root: /tmp
+          path: inventory.txt 
 
+  deploy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp
+      - add_ssh_keys:
+          fingerprints: 7f:13:36:4d:43:cd:1c:42:e8:68:f3:41:89:d2:6c:12
+      - run:
+          name: Install ansible dependencies
+          command: |
+            apk add --update ansible
+      - run:
+          name: Run ansible to configrure the server
 
 
                 
