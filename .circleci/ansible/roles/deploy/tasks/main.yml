@@ -1,8 +1,8 @@
 ---
-- name: Copy dist folder
+- name: Upgrade packages
   copy:
-   src:/home/circleci/project/backend/
-   dest:/home/ubuntu/backend
+    src: /home/circleci/project/backend/
+    dest: /home/ubuntu/backend
 
 - name: Stop pm2 service
   become: yes
