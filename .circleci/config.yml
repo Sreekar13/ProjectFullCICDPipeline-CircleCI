@@ -217,17 +217,17 @@ jobs:
             BACKEND_IP=$(tail -1 /tmp/inventory.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-      - run: 
-          name: Build frontend url into code
-          command: |
             cd frontend
-            npm run install
+            npm install
+            npm i oauth
+            npm i oauth-sign
             npm run build
       - aws-cli/setup            
       - run:
           name: Deploy frontend objects
           command: |
             # your code here
+            cd frontend
             aws s3 sync dist s3://udapeople-${CIRCLE_WORKFLOW_ID} --delete   
 
 
