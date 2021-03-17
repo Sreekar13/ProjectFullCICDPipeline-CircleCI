@@ -168,6 +168,11 @@ jobs:
           name: Run ansible to configrure the server
           command: |
             ansible-playbook -i /inventory.txt .circleci/ansible/configure-server.yml --extra-vars "HOST=$TYPEORM_HOST PORT=$TYPEORM_PORT USERNAME=$TYPEORM_USERNAME PASSWORD=$TYPEORM_PASSWORD DATABASE=$TYPEORM_DATABASE"  -vvvv
+            cat /inventory.txt > /temp/ip.txt
+      - persist_to_workspace:
+          root: /temp
+          paths:
+            - ip.txt
 
   run-migrations:
     docker:
@@ -201,9 +206,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - aws-cli/setup
       - attach_workspace:
-          at: /        
+          at: /tmp        
       - restore_cache:
           key: forntend-build-dist
       - run:
@@ -218,6 +222,7 @@ jobs:
           command: |
             npm run install
             npm run build
+      - aws-cli/setup            
       - run:
           name: Deploy frontend objects
           command: |
