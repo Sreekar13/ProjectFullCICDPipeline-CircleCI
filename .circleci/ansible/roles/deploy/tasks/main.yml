@@ -14,6 +14,6 @@
   shell: pm2 stop backend
 
 - name: Start pm2 service
-  command: pm2 start backend
+  command: pm2 start npm --name backend-service -- start
   args:
-    chdir: /home/ubuntu
+    chdir: /home/ubuntu/backend
