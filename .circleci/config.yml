@@ -41,9 +41,9 @@ jobs:
             cd backend
             npm install
             npm run build
-      - persist_to_workspace:
-          root: ./
-          paths: "backend"
+      - save_cache:
+          paths: backend
+          key: backend-build
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -239,9 +239,7 @@ jobs:
       - attach_workspace:
           at: /tmp
       - attach_workspace:
-          at: ./
-      - restore_cache:
-          key: backend-build          
+          at: ./        
       - add_ssh_keys:
           fingerprints: 7f:13:36:4d:43:cd:1c:42:e8:68:f3:41:89:d2:6c:12
       - run:
@@ -279,5 +277,6 @@ workflows:
 ##          requires: [build-backend]
 ##      - deploy-frontend:
 ##          requires: [configure-infrastructure]
-      - deploy-backend
+      - deploy-backend:
+          requires: [build-backend]
          ## requires: [configure-infrastructure]
