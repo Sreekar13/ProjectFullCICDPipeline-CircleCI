@@ -9,7 +9,7 @@
   copy:
     owner: ubuntu
     mode: '644'
-    src: backend.tar.gz
+    src: /root/project/backend.tar.gz
     dest: /home/ubuntu/
 
 - name: Untar backend.tar.gz
