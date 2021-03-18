@@ -42,7 +42,7 @@ jobs:
             npm install
             npm run build
       - save_cache:
-          paths: backend/node-modules
+          paths: backend
           key: backend-build
       - slack/notify:
           event: fail
@@ -181,9 +181,6 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - restore_cache:
-          key: backend-build
-
       - run:
           name: Run migrations
           command: |
@@ -241,15 +238,10 @@ jobs:
       - checkout
       - attach_workspace:
           at: /tmp
+      - restore_cache:
+          key: backend-build          
       - add_ssh_keys:
           fingerprints: 7f:13:36:4d:43:cd:1c:42:e8:68:f3:41:89:d2:6c:12
-      - run:
-          name: Install ansible dependencies
-          command: |
-            apk add --update ansible
-            cd backend
-            npm install
-            npm run build
       - run:
           name: Run ansible to deploy backend to remote the server
           command: |
