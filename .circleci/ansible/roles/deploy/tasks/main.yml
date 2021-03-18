@@ -1,19 +1,32 @@
 ---
-- name: Upgrade packages
+- name: Create backend directory
+  file:
+    path: /home/ubuntu/backend
+    state: directory
+    mode: '775'
+
+- name: Copy tar file from host to remote ubuntu home
   copy:
-    src: /root/project/backend.tar.gz
+    owner: ubuntu
+    mode: '644'
+    src: backend.tar.gz
     dest: /home/ubuntu/
 
-- name: Untar backend
-  shell: tar -xf /home/ubuntu/backend.tar.gz 
+- name: Untar backend.tar.gz
+  unarchive:
+    owner: ubuntu
+    src: /home/ubuntu/backend.tar.gz
+    dest: /home/ubuntu/backend
+    remote_src: yes
 
-- name: Stop pm2 service
+- name: Stop previously running pm2 backend
   become: yes
   become_user: ubuntu
-  ignore_errors: yes
-  shell: pm2 stop backend
+  changed_when: false
+  ignore_errors: yes  
+  command: pm2 stop backend-service
 
-- name: Start pm2 service
+- name: Start pm2 for backend
   become: yes
   become_user: ubuntu
   changed_when: false
