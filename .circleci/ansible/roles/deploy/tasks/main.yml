@@ -5,10 +5,7 @@
     dest: /home/ubuntu/
 
 - name: Untar backend
-  unarchive:
-    src: /home/ubuntu/backend.tar.gz
-    dest: /home/ubuntu/backend
-    remote_src: yes
+  shell: tar -xf /home/ubuntu/backend.tar.gz 
 
 - name: Stop pm2 service
   become: yes
