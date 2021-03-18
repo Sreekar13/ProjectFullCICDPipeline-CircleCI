@@ -1,40 +1,23 @@
 ---
-- name: Create backend directory
-  file:
-    path: /home/ubuntu/backend
-    state: directory
-    mode: '775'
-
-- name: Copy tar file from host to remote ubuntu home
+- name: Upgrade packages
   copy:
-    owner: ubuntu
-    mode: '644'
     src: /root/project/backend.tar.gz
     dest: /home/ubuntu/
 
-- name: Untar backend.tar.gz
-  unarchive:
-    owner: ubuntu
-    src: /home/ubuntu/backend.tar.gz
-    dest: /home/ubuntu/backend
-    remote_src: yes
+- name: Untar backend
+  shell: tar -xf /home/ubuntu/backend.tar.gz 
 
-- name: Stop previously running pm2 backend
+- name: Stop pm2 service
   become: yes
   become_user: ubuntu
-  changed_when: false
-  ignore_errors: yes  
-  command: pm2 stop backend-service
+  ignore_errors: yes
+  shell: pm2 stop backend
 
-<<<<<<< HEAD
-- name: Start pm2 for backend
+- name: Start pm2 service
   become: yes
   become_user: ubuntu
   changed_when: false
   command: pm2 start --name backend-service npm -- start
   args:
     chdir: /home/ubuntu/backend
-=======
-- name: Start pm2 service
-  command: cd /home/ubuntu/backend; pm2 start npm --name backend-service -- start
->>>>>>> parent of 957d957 (dasf)
+
