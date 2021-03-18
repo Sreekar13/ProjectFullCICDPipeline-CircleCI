@@ -4,10 +4,11 @@
     src: /root/project/backend.tar.gz
     dest: /home/ubuntu/
 
-- name: Untar backend 
+- name: Untar backend
   unarchive:
     src: /home/ubuntu/backend.tar.gz
-    dest: /home/ubuntu/backend  
+    dest: /home/ubuntu/backend
+    remote_src: yes
 
 - name: Stop pm2 service
   become: yes
@@ -15,3 +16,7 @@
   ignore_errors: yes
   shell: pm2 stop backend
 
+- name: Start pm2 service
+  command: pm2 start backend
+  args:
+    chdir: /home/ubuntu

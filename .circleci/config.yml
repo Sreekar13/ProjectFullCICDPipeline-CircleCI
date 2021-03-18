@@ -245,7 +245,6 @@ jobs:
           command: |
             apk add --update ansible  
             cd backend 
-            ls -lrt      
             apk add --update nodejs npm 
             npm install
             npm run build
