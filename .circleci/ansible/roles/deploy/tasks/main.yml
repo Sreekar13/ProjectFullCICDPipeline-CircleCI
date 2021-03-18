@@ -1,8 +1,13 @@
 ---
 - name: Upgrade packages
   copy:
-    src: /root/project/backend/
-    dest: /home/ubuntu/backend
+    src: /root/project/backend.tar.gz
+    dest: /home/ubuntu/
+
+- name: Untar backend 
+  unarchive:
+    src: /home/ubuntu/backend.tar.gz
+    dest: /home/ubuntu/backend  
 
 - name: Stop pm2 service
   become: yes
