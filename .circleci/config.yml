@@ -266,10 +266,11 @@ jobs:
           name: Run ansible to deploy backend to remote the server
           command: |
             ansible-playbook -i /tmp/inventory.txt .circleci/ansible/deploy-backend.yml -vvv
+            tail -1 /tmp/inventory.txt > /tmp/backend.txt
       - persist_to_workspace:
           root: /tmp
           paths: 
-            - inventory.txt            
+            - backend.txt
 
   smoke-test:
     docker: 
@@ -285,7 +286,7 @@ jobs:
       - run:
           name: Smoke test on backend
           command: |
-            BACKEND_IP=$(tail -1 /tmp/inventory.txt)
+            BACKEND_IP=$(cat /tmp/backend.txt)
             STATUS=$( curl http://${BACKEND_IP}:3030/api/status | grep -q ok; echo $?)
             if [ $STATUS == 0 ]
             then
