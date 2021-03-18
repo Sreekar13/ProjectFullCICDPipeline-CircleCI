@@ -266,31 +266,71 @@ jobs:
           name: Run ansible to deploy backend to remote the server
           command: |
             ansible-playbook -i /tmp/inventory.txt .circleci/ansible/deploy-backend.yml -vvv
+      - persist_to_workspace:
+          root: /tmp
+          paths: 
+            - inventory.txt            
+
+  smoke-test:
+    docker: 
+      - image: python:3.7-alpine3.11
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Install curl 
+          command: | 
+            apk update
+            apk add curl
+      - run:
+          name: Smoke test on backend
+          command: |
+            BACKEND_IP=$(tail -1 /tmp/inventory.txt)
+            STATUS=$( curl http://${BACKEND_IP}:3030/api/status | grep -q ok; echo $?)
+            if [ $STATUS == 0 ]
+            then
+              return 0
+            else
+              return 1
+            fi
+      - run:
+          name: Smoke test on frontend
+          command: |
+            if curl -s ${URL} | grep "Welcome"
+            then
+              return 1
+            else
+              return 1
+            fi
+      
+      
+
+            
+
 
                 
 
 workflows:
   default:
     jobs:
-      #- build-frontend
-      #- build-backend
-      #- test-frontend:
-      #    requires: [build-frontend]
-      #- test-backend:
-      #    requires: [build-backend]
-      #- scan-frontend:
-      #    requires: [test-frontend]
-      #- scan-backend:
-      #    requires: [test-backend]
-      - deploy-infrastructure
-      #     requires: [build-frontend,build-backend]
-      #    requires: [scan-frontend,scan-backend]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [test-frontend]
+      - scan-backend:
+          requires: [test-backend]
+      - deploy-infrastructure:
+          requires: [scan-frontend,scan-backend]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-##      - run-migrations:
-##          requires: [build-backend]
-##      - deploy-frontend:
-##          requires: [configure-infrastructure]
+      - run-migrations:
+          requires: [build-backend]
+      - deploy-frontend:
+          requires: [configure-infrastructure]
       - deploy-backend:
           requires: [configure-infrastructure]
 
