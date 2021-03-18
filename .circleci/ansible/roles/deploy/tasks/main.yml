@@ -1,7 +1,7 @@
 ---
 - name: Upgrade packages
   copy:
-    src: ./backend/
+    src: /root/project/backend/
     dest: /home/ubuntu/backend
 
 - name: Stop pm2 service
