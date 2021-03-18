@@ -4,6 +4,23 @@ orbs:
   slack: circleci/slack@4.1
   aws-cli: circleci/aws-cli@1.4.0
 
+commands:
+  destroy-environment:
+    description: This command destroys the environment
+    parameters:
+      id:
+        type: string
+        default: $CIRCLE_WORKFLOW_ID
+    steps:
+      - run:
+          name: Destroy environment
+          command: |
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID}/ --recursive
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID}" 
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID}"
+          when: on_fail
+
+
 jobs:
   build-frontend:
     docker:
@@ -297,6 +314,7 @@ jobs:
       - run:
           name: Smoke test on frontend
           command: |
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-us-east-1.amazonaws.com"
             if curl -s ${URL} | grep "Welcome"
             then
               return 1
