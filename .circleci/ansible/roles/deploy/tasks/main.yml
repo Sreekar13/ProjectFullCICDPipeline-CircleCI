@@ -26,6 +26,7 @@
   ignore_errors: yes  
   command: pm2 stop backend-service
 
+<<<<<<< HEAD
 - name: Start pm2 for backend
   become: yes
   become_user: ubuntu
@@ -33,3 +34,7 @@
   command: pm2 start --name backend-service npm -- start
   args:
     chdir: /home/ubuntu/backend
+=======
+- name: Start pm2 service
+  command: cd /home/ubuntu/backend; pm2 start npm --name backend-service -- start
+>>>>>>> parent of 957d957 (dasf)
