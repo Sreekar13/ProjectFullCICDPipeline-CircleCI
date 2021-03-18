@@ -250,7 +250,7 @@ jobs:
             npm install
             npm run build
             cd ../
-            tar -zcf backend/
+            tar -zcf backend.tar.gz backend/
             ls -lrt
       - run:
           name: Run ansible to deploy backend to remote the server
