@@ -319,13 +319,13 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - attach_workspace:
-          at: /tmp
-      - aws-cli/setup          
+          at: /tmp      
       - run:
           name: Install curl 
           command: | 
             apk update
             apk add curl
+      - aws-cli/setup                
       - run:
           name: Smoke test on backend
           command: |
