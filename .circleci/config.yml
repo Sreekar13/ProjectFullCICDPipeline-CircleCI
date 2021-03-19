@@ -320,6 +320,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp
+      - aws-cli/setup          
       - run:
           name: Install curl 
           command: | 
