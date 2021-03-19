@@ -32,13 +32,13 @@ commands:
           command: |
             STATUS=$( curl -H "token: e6d371b7-e168-486d-9011-0dda1a6a3ab4" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID} )
             if [ $STATUS == 1 ]
-            fi
             then
               cd ~/project/backend
               npm install
               npm run migrations:revert
               echo "Migrations reverted"
-            fi          
+            fi
+          when: on_fail
 
 
 jobs:
@@ -269,8 +269,7 @@ jobs:
           root: /tmp
           paths: 
             - inventory.txt 
-      - destroy-environment
-      - revert-migrations                  
+      - destroy-environment               
 
   deploy-backend:
     docker:
