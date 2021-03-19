@@ -20,6 +20,26 @@ commands:
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID}"
           when: on_fail
 
+  revert-migrations:
+    description: This is to revert migrations
+    parameters:
+      id:
+        type: string
+        default: $CIRCLE_WORKFLOW_ID
+    steps:
+      - run:
+          name: Revert migration 
+          command: |
+            STATUS=$( curl -H "token: e6d371b7-e168-486d-9011-0dda1a6a3ab4" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID} )
+            if [ $STATUS == 1 ]
+            fi
+            then
+              cd ~/project/backend
+              npm install
+              npm run migrations:revert
+              echo "Migrations reverted"
+            fi          
+
 
 jobs:
   build-frontend:
