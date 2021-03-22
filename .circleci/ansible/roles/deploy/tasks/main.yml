@@ -1,0 +1,23 @@
+---
+- name: Upgrade packages
+  copy:
+    src: /root/project/backend.tar.gz
+    dest: /home/ubuntu/
+
+- name: Untar backend
+  shell: tar -xf /home/ubuntu/backend.tar.gz 
+
+- name: Stop pm2 service
+  become: yes
+  become_user: ubuntu
+  ignore_errors: yes
+  shell: pm2 stop backend
+
+- name: Start pm2 service
+  become: yes
+  become_user: ubuntu
+  changed_when: false
+  command: pm2 start --name backend-service npm -- start
+  args:
+    chdir: /home/ubuntu/backend
+
