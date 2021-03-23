@@ -132,7 +132,7 @@ jobs:
             npm install
             npm i oauth
             npm i oauth-sign            
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
       - slack/notify:
           event: fail
           template: basic_fail_1
